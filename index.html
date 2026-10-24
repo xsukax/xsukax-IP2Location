@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Look up the approximate geographical location and network details of any public IPv4 or IPv6 address.">
+  <title>xsukax IP2Location — Free IP Geolocation Lookup</title>
+  <style>
+    :root{--ink:#12141f;--paper:#fff;--soft:#f4f5f7;--line:#dfe1e7;--muted:#69707f;--acid:#dbff00;--danger:#b42318;--ok:#087a55;--ease:cubic-bezier(.15,0,.45,1)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}button,input{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}.shell{width:min(1240px,calc(100% - 48px));margin:auto}.skip{position:absolute;left:16px;top:-60px;background:var(--acid);color:var(--ink);padding:12px 18px;z-index:20}.skip:focus{top:12px}
+    header{height:84px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #292c39}.brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:-.04em;font-size:21px}.brand-mark{width:28px;height:28px;border:1.5px solid currentColor;border-radius:50%;position:relative}.brand-mark:before,.brand-mark:after{content:"";position:absolute;border:1px solid currentColor;border-radius:50%}.brand-mark:before{inset:4px 9px}.brand-mark:after{left:3px;right:3px;top:12px;border-width:1px 0 0;border-radius:0}.topnote{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#a8adba;display:flex;align-items:center;gap:9px}.pulse{width:6px;height:6px;background:var(--acid);border-radius:50%;box-shadow:0 0 0 4px #dbff0018}
+    .hero{background:var(--ink);color:white;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;right:-180px;top:-300px;width:650px;height:650px;border:1px solid #ffffff0d;border-radius:50%;box-shadow:0 0 0 80px #ffffff03,0 0 0 160px #ffffff02;pointer-events:none}.hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:80px;padding:76px 0 68px;position:relative;z-index:1}.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:650;display:flex;align-items:center;gap:12px}.eyebrow:before{content:"";width:26px;height:1px;background:currentColor}.hero h1{font-size:clamp(46px,6vw,82px);line-height:.98;letter-spacing:-.065em;font-weight:580;margin:25px 0 25px;max-width:720px}.hero h1 span{color:var(--acid)}.intro{color:#b9bdc8;font-size:16px;line-height:1.7;max-width:500px;margin:0}.lookup-panel{align-self:end;padding-bottom:5px}.lookup-label{display:block;font-size:12px;color:#d8dbe2;margin:0 0 12px}.search-row{display:flex;background:white;padding:6px;border-radius:100px;transition:box-shadow .2s}.search-row:focus-within{box-shadow:0 0 0 4px #dbff0033}.search-row input{min-width:0;flex:1;border:0;outline:0;background:transparent;padding:12px 16px;color:var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:15px}.search-row input::placeholder{color:#8b91a0}.lookup-btn{border:0;border-radius:100px;background:var(--acid);color:var(--ink);font-weight:750;padding:13px 22px;display:flex;align-items:center;gap:9px;white-space:nowrap;transition:transform .2s var(--ease),background .2s}.lookup-btn:hover{background:#e5ff4f;transform:translateX(2px)}.lookup-btn:disabled{cursor:wait;opacity:.7;transform:none}.lookup-btn svg{width:17px}.input-message{min-height:22px;font-size:12px;color:#ffb4ab;margin:10px 14px 0}.quick-actions{display:flex;gap:18px;margin:8px 14px 0;flex-wrap:wrap}.text-btn{border:0;background:none;color:#c5c9d3;padding:0;font-size:12px;text-decoration:underline;text-underline-offset:4px}.text-btn:hover{color:var(--acid)}
+    main{min-height:430px}.empty{padding:70px 0 76px;display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;align-items:start}.section-no{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}.empty h2,.results-heading h2{font-size:32px;line-height:1.15;letter-spacing:-.04em;margin:0;font-weight:600}.empty-copy{color:var(--muted);line-height:1.7;max-width:380px;font-size:14px}.steps{border-top:1px solid var(--ink)}.step{display:grid;grid-template-columns:48px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--line)}.step-num{font-size:12px;color:var(--muted);padding-top:3px}.step h3{font-size:15px;margin:0 0 6px}.step p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+    #results{display:none;padding:54px 0 70px;animation:enter .55s var(--ease)}@keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}.results-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:30px}.status-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:100px;padding:8px 12px;font-size:11px;color:var(--ok);white-space:nowrap}.status-pill:before{content:"";width:6px;height:6px;background:currentColor;border-radius:50%}.result-layout{display:grid;grid-template-columns:1.15fr .85fr;border:1px solid var(--ink);min-height:390px}.map-wrap{position:relative;min-height:390px;background:#e9ebe5;overflow:hidden}.map-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:saturate(.65) contrast(.95)}.map-label{position:absolute;left:16px;bottom:16px;background:var(--ink);color:white;padding:10px 13px;font-size:11px;z-index:1;pointer-events:none}.place{padding:38px 36px;display:flex;flex-direction:column}.place-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}.place h3{font-size:clamp(30px,4vw,48px);letter-spacing:-.05em;line-height:1.05;margin:18px 0 10px;font-weight:600;overflow-wrap:anywhere}.region{font-size:16px;color:var(--muted);margin:0}.coords{margin-top:auto;padding-top:35px;display:flex;gap:26px;font-size:12px}.coord span{display:block;color:var(--muted);font-family:Inter,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}.details{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink);border-top:0}.detail{padding:23px 25px;border-right:1px solid var(--line);min-width:0}.detail:last-child{border:0}.detail dt{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}.detail dd{margin:0;font-size:13px;font-weight:550;line-height:1.5;overflow-wrap:anywhere}.result-actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:16px}.disclaimer{font-size:11px;color:var(--muted);line-height:1.5;max-width:600px}.action-group{display:flex;gap:8px}.outline-btn{border:1px solid var(--ink);background:white;color:var(--ink);border-radius:100px;padding:10px 15px;font-size:11px;font-weight:650;transition:.2s}.outline-btn:hover{background:var(--ink);color:white}
+    .history-section{display:none;padding:0 0 70px}.history-head{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--ink);padding-top:20px;margin-bottom:10px}.history-head h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em}.clear-btn{border:0;background:none;font-size:11px;text-decoration:underline;color:var(--muted)}.history-list{display:flex;gap:8px;flex-wrap:wrap}.history-item{border:1px solid var(--line);background:white;border-radius:100px;padding:9px 13px;font-size:11px}.history-item:hover{border-color:var(--ink);background:var(--soft)}
+    .provider-picker{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:15px 14px 11px;flex-wrap:wrap}.provider-picker label{font-size:12px;color:#d8dbe2}.provider-picker select{min-width:200px;max-width:100%;background:#fff;border:1px solid #cbd0da;color:var(--ink);border-radius:10px;padding:10px 13px;font-size:12px;cursor:pointer}.provider-picker select:disabled{opacity:.65;cursor:wait}.url-help{color:#bdc4cf;font-size:11px;line-height:1.65;margin:12px 14px 0}.url-help code{color:var(--acid);font-size:10px;overflow-wrap:anywhere}.provider-health{margin:0 14px;line-height:1.7;font-size:11px;color:#d4d7e0;overflow-wrap:anywhere}.provider-health:empty{display:none}.lookup-progress{min-height:18px;font-size:11px;line-height:1.5;margin:10px 14px 0;color:#d3e58e}.quick-actions button:disabled{opacity:.45;cursor:wait}.brand{letter-spacing:-.035em!important}.source-strip{border:1px solid var(--ink);border-top:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:15px 24px;font-size:12px}.source-strip>div:first-child{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.source-label{font-size:10px;letter-spacing:.1em;color:var(--muted);margin-right:4px}.source-strip a{color:var(--ink);font-weight:700;text-underline-offset:3px}.source-position{color:var(--muted);font-size:11px}.source-hint{color:var(--muted);font-size:11px}.error-box{overflow-wrap:anywhere}.error-box{display:none;margin:28px 0 0;border:1px solid #f0b8b2;background:#fff7f6;padding:20px 22px;color:var(--danger);font-size:13px;line-height:1.6}.error-box strong{display:block;margin-bottom:3px}.loading .result-layout,.loading .details{opacity:.45}.spinner{width:14px;height:14px;border:2px solid #12141f44;border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    footer{background:var(--soft);border-top:1px solid var(--line)}.footer-inner{padding:28px 0;display:flex;justify-content:space-between;gap:30px;color:var(--muted);font-size:11px;line-height:1.6}.footer-inner a{color:var(--ink)}
+    :focus-visible{outline:3px solid #86a600;outline-offset:3px}@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:45px;padding:58px 0}.lookup-panel{max-width:600px}.empty{grid-template-columns:1fr;gap:35px}.result-layout{grid-template-columns:1fr}.map-wrap{min-height:340px}.details{grid-template-columns:repeat(2,1fr)}.detail:nth-child(2){border-right:0}.detail:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+    @media(max-width:600px){.topnote{display:none}.shell{width:min(100% - 28px,1240px)}header{height:70px}.topnote{font-size:9px}.hero-grid{padding:44px 0 40px}.hero h1{font-size:48px}.intro{font-size:14px}.search-row{border-radius:18px;flex-wrap:wrap;padding:6px}.search-row input{width:100%;flex:auto;padding:13px 12px}.lookup-btn{width:100%;justify-content:center}.quick-actions{gap:14px}.empty{padding:46px 0}.results-heading{align-items:start;flex-direction:column}.place{padding:28px 24px}.details{grid-template-columns:1fr}.detail{border-right:0;border-bottom:1px solid var(--line)!important;padding:19px 22px}.detail:last-child{border-bottom:0!important}.result-actions{align-items:start;flex-direction:column}.footer-inner{flex-direction:column;gap:8px}.coords{gap:18px;flex-wrap:wrap}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+<a class="skip" href="#lookup">Skip to lookup</a>
+<header class="hero"><div class="shell" style="display:flex;align-items:center;justify-content:space-between;width:min(1240px,calc(100% - 48px))"><div class="brand"><span class="brand-mark" aria-hidden="true"></span>xsukax <span style="color:var(--acid)">IP2Location</span></div><div class="topnote"><span class="pulse"></span>Network intelligence / live</div></div></header>
+<section class="hero" aria-labelledby="page-title">
+  <div class="shell hero-grid">
+    <div><div class="eyebrow" style="color:var(--acid)">IP geolocation utility</div><h1 id="page-title">Every address<br>has a <span>place.</span></h1><p class="intro">Trace any public IP address to its approximate location, network provider, and timezone. Four free, keyless services with automatic backup. No sign-up required.</p></div>
+    <div class="lookup-panel" id="lookup">
+      <form id="lookupForm" novalidate>
+        <label class="lookup-label mono" for="ipInput">ENTER IPV4 OR IPV6 ADDRESS</label>
+        <div class="search-row"><input id="ipInput" name="ip" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. 8.8.8.8" aria-describedby="inputMessage" maxlength="45"><button class="lookup-btn" id="lookupBtn" type="submit"><span id="btnText">Locate IP</span><svg id="btnArrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></button></div>
+        <div class="input-message" id="inputMessage" role="alert"></div>
+        <div class="provider-picker"><label for="providerSelect">Geolocation provider</label><select id="providerSelect" aria-label="Select geolocation provider"><option value="auto">Automatic — try all providers</option><option value="ipwhois">ipwho.is</option><option value="ipapico">ipapi.co</option><option value="geojs">GeoJS</option><option value="freeipapi">FreeIPAPI</option></select></div>
+        <div class="quick-actions"><button class="text-btn" id="myIpBtn" type="button">Use my IP address</button><button class="text-btn" id="exampleBtn" type="button">Try an example</button><button class="text-btn" id="checkProvidersBtn" type="button">Test all providers</button></div>
+        <div class="lookup-progress" id="lookupProgress" role="status" aria-live="polite"></div>
+        <div class="provider-health" id="providerHealth" role="status" aria-live="polite"></div>
+        <p class="url-help">Direct links: <code>?ip=8.8.8.8</code> for the map, or <code>?raw=8.8.8.8</code> for JSON. Add <code>&amp;provider=geojs</code> to select a service.</p>
+      </form>
+      <div class="error-box" id="errorBox" role="alert"><strong id="errorTitle">Lookup unavailable</strong><span id="errorText"></span></div>
+    </div>
+  </div>
+</section>
+<main class="shell" id="main">
+  <section class="empty" id="emptyState"><div><div class="section-no mono">01 / Start a trace</div><h2>From numbers<br>to somewhere.</h2><p class="empty-copy">Enter an address above to reveal its registered geographical footprint and connection details.</p></div><div class="steps"><div class="step"><span class="step-num mono">01</span><div><h3>Input an address</h3><p>Both IPv4 and IPv6 formats are supported, with validation before every request.</p></div></div><div class="step"><span class="step-num mono">02</span><div><h3>Read the location</h3><p>See the city, region, country, coordinates, and an interactive OpenStreetMap view.</p></div></div><div class="step"><span class="step-num mono">03</span><div><h3>Understand the network</h3><p>Inspect the ISP, autonomous system, timezone, and connection metadata when available.</p></div></div></div></section>
+  <section id="results" aria-live="polite" aria-busy="false">
+    <div class="results-heading"><div><div class="section-no mono">02 / Lookup result</div><h2 class="mono" id="resultIp">—</h2></div><span class="status-pill">Approximate location found</span></div>
+    <div class="result-layout"><div class="map-wrap"><iframe id="map" title="Map showing approximate IP location" loading="lazy" referrerpolicy="no-referrer"></iframe><div class="map-label mono" id="mapLabel">COORDINATES</div></div><div class="place"><span class="place-label mono" id="countryLabel">COUNTRY</span><h3 id="city">—</h3><p class="region" id="region">—</p><div class="coords mono"><div class="coord"><span>Latitude</span><b id="lat">—</b></div><div class="coord"><span>Longitude</span><b id="lon">—</b></div><div class="coord"><span>Postal code</span><b id="postal">—</b></div></div></div></div>
+    <dl class="details"><div class="detail"><dt>Network / ISP</dt><dd id="isp">—</dd></div><div class="detail"><dt>Organization</dt><dd id="org">—</dd></div><div class="detail"><dt>Timezone</dt><dd id="timezone">—</dd></div><div class="detail"><dt>Connection</dt><dd id="connection">—</dd></div></dl>
+    <div class="source-strip"><div><span class="source-label mono">DATA SOURCE</span><a id="sourceName" href="#" target="_blank" rel="noopener noreferrer">—</a><span id="sourcePosition" class="source-position"></span><span id="sourceAccuracy" class="source-position"></span></div><div class="source-hint" id="sourceHint">Automatic fallback · no API key required</div></div>
+    <div class="result-actions"><p class="disclaimer">IP geolocation is approximate; this map pin does not identify a person or exact address. VPNs, proxies, cellular routing, and provider databases can change results. Public IPs you look up are sent to the selected provider.</p><div class="action-group" style="flex-wrap:wrap"><button class="outline-btn" id="copyBtn" type="button">Copy summary</button><button class="outline-btn" id="shareBtn" type="button">Copy link</button><a class="outline-btn" id="jsonLink" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none">View JSON</a><button class="outline-btn" id="newBtn" type="button">New lookup</button></div></div>
+  </section>
+  <div class="error-box" id="mainError" role="alert"><strong>We couldn’t complete that lookup.</strong><span id="mainErrorText"></span></div>
+  <section class="history-section" id="historySection"><div class="history-head"><h2>Recent this session</h2><button class="clear-btn" id="clearHistory" type="button">Clear history</button></div><div class="history-list" id="historyList"></div></section>
+</main>
+<footer><div class="shell footer-inner"><span>xsukax IP2Location / Lightweight IP intelligence</span><span>Fallback sources: <a href="https://ipwho.is/" target="_blank" rel="noopener noreferrer">ipwho.is</a> · <a href="https://ipapi.co/" target="_blank" rel="noopener noreferrer">ipapi.co</a> · <a href="https://www.geojs.io/" target="_blank" rel="noopener noreferrer">GeoJS</a> · <a href="https://freeipapi.com/" target="_blank" rel="noopener noreferrer">FreeIPAPI</a> · Map: <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap</a></span></div></footer>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const form = $('lookupForm');
+  const input = $('ipInput');
+  const button = $('lookupBtn');
+  const progress = $('lookupProgress');
+  const providerSelect = $('providerSelect');
+  const PROVIDER_TIMEOUT_MS = 7500;
+  let busy = false;
+  let current = null;
+  let history = [];
+
+  // Provider order is intentional; each service is called only if the previous one fails.
+  // These are public HTTPS, keyless endpoints. Their limits and browser CORS rules may change.
+  const providers = [
+    {
+      id: 'ipwhois', name: 'ipwho.is', website: 'https://ipwho.is/',
+      url: ip => 'https://ipwho.is/' + (ip ? encodeURIComponent(ip) : ''),
+      normalize: d => {
+        if (d.success === false) throw new Error(d.message || 'Address not found');
+        return {
+          ip: d.ip, version: d.type, country: d.country, countryCode: d.country_code,
+          city: d.city, region: d.region, postal: d.postal, latitude: d.latitude,
+          longitude: d.longitude, timezone: d.timezone?.id, utc: d.timezone?.utc,
+          isp: d.connection?.isp, organization: d.connection?.org,
+          asn: d.connection?.asn
+        };
+      }
+    },
+    {
+      id: 'ipapico', name: 'ipapi.co', website: 'https://ipapi.co/',
+      url: ip => 'https://ipapi.co/' + (ip ? encodeURIComponent(ip) + '/' : '') + 'json/',
+      normalize: d => {
+        if (d.error) throw new Error(d.reason || 'Address not found');
+        return {
+          ip: d.ip, version: d.version, country: d.country_name, countryCode: d.country_code || d.country,
+          city: d.city, region: d.region, postal: d.postal, latitude: d.latitude,
+          longitude: d.longitude, timezone: d.timezone, utc: d.utc_offset,
+          isp: d.org, organization: d.org, asn: d.asn
+        };
+      }
+    },
+    {
+      id: 'geojs', name: 'GeoJS', website: 'https://www.geojs.io/',
+      url: ip => 'https://get.geojs.io/v1/ip/geo' + (ip ? '/' + encodeURIComponent(ip) : '') + '.json',
+      normalize: d => ({
+        ip: d.ip, country: d.country, countryCode: d.country_code,
+        city: d.city, region: d.region, latitude: d.latitude, longitude: d.longitude,
+        timezone: d.timezone, organization: d.organization_name === 'Unknown' ? null : d.organization_name,
+        isp: d.organization_name === 'Unknown' ? null : d.organization_name,
+        asn: d.asn === 64512 ? null : d.asn,
+        accuracyKm: d.accuracy
+      })
+    },
+    {
+      id: 'freeipapi', name: 'FreeIPAPI', website: 'https://freeipapi.com/',
+      url: ip => 'https://free.freeipapi.com/api/v1/json' + (ip ? '/' + encodeURIComponent(ip) : ''),
+      normalize: d => ({
+        ip: d.ipAddress, version: d.ipVersion, country: d.countryName, countryCode: d.countryCode,
+        city: d.cityName, region: d.regionName, postal: d.zipCode,
+        latitude: d.latitude, longitude: d.longitude,
+        // The service lists a country's time zones, not necessarily the address's time zone.
+        timezone: Array.isArray(d.timeZones) && d.timeZones.length === 1 ? d.timeZones[0] : null,
+        organization: d.asnOrganization, isp: d.asnOrganization, asn: d.asn,
+        proxy: d.isProxy === true
+      })
+    }
+  ];
+
+  // Stable URL provider identifiers; older/domain-style aliases are accepted, too.
+  const providerAliases = {
+    auto: 'auto', automatic: 'auto',
+    ipwhois: 'ipwhois', 'ipwho.is': 'ipwhois',
+    ipapico: 'ipapico', 'ipapi.co': 'ipapico',
+    geojs: 'geojs', 'geojs.io': 'geojs',
+    freeipapi: 'freeipapi', 'freeipapi.com': 'freeipapi'
+  };
+  function selectedMode(value) {
+    return Object.hasOwn(providerAliases, String(value).trim().toLowerCase())
+      ? providerAliases[String(value).trim().toLowerCase()] : null;
+  }
+
+  function linkFor(kind, ip, mode) {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('ip');
+    url.searchParams.delete('raw');
+    url.searchParams.delete('provider');
+    url.searchParams.set(kind, ip);
+    if (mode && mode !== 'auto') url.searchParams.set('provider', mode);
+    url.hash = '';
+    return url.href;
+  }
+
+  // Updating the address bar is optional; file:// browser security rules vary.
+  function updateAddress(kind, ip, mode) {
+    try { window.history.replaceState(null, '', linkFor(kind, ip, mode)); } catch { /* file:// restrictions */ }
+  }
+
+  function parseIPv4(ip) {
+    const p = ip.split('.');
+    return p.length === 4 && p.every(v => /^(0|[1-9]\d{0,2})$/.test(v) && +v <= 255)
+      ? p.map(Number) : null;
+  }
+
+  // Strict parsing also handles compressed IPv6 and correctly positioned embedded IPv4.
+  function parseIP(ip) {
+    const v4 = parseIPv4(ip);
+    if (v4) return {version: 4, bytes: v4};
+    if (!ip.includes(':') || !/^[a-fA-F0-9:.]+$/.test(ip)) return null;
+    let expanded = ip;
+    if (ip.includes('.')) {
+      const index = ip.lastIndexOf(':');
+      const tail = parseIPv4(ip.slice(index + 1));
+      if (index < 0 || !tail) return null;
+      const left = ((tail[0] << 8) | tail[1]).toString(16);
+      const right = ((tail[2] << 8) | tail[3]).toString(16);
+      expanded = ip.slice(0, index + 1) + left + ':' + right;
+    }
+    const halves = expanded.split('::');
+    if (halves.length > 2) return null;
+    const unpack = s => s === '' ? [] : s.split(':');
+    const head = unpack(halves[0]);
+    const tail = halves.length === 2 ? unpack(halves[1]) : [];
+    if (halves.length === 2 && head.length + tail.length >= 8) return null;
+    const groups = halves.length === 2
+      ? [...head, ...Array(8 - head.length - tail.length).fill('0'), ...tail]
+      : head;
+    if (groups.length !== 8 || !groups.every(g => /^[a-fA-F0-9]{1,4}$/.test(g))) return null;
+    const bytes = [];
+    for (const group of groups) {
+      const n = parseInt(group, 16);
+      bytes.push(n >> 8, n & 255);
+    }
+    return {version: 6, bytes};
+  }
+
+  function isPublicIP(parsed) {
+    if (!parsed) return false;
+    const b = parsed.bytes;
+    if (parsed.version === 4) {
+      const [a, c, d] = b;
+      return !(a === 0 || a === 10 || a === 127 || a >= 224 ||
+        (a === 100 && c >= 64 && c <= 127) ||
+        (a === 169 && c === 254) ||
+        (a === 172 && c >= 16 && c <= 31) ||
+        (a === 192 && c === 168) ||
+        (a === 192 && c === 0 && d === 2) ||
+        (a === 198 && (c === 18 || c === 19)) ||
+        (a === 198 && c === 51 && d === 100) ||
+        (a === 203 && c === 0 && d === 113));
+    }
+    // IPv6 global-unicast range 2000::/3; excludes loopback, link-local,
+    // unique-local, multicast, IPv4-mapped, and documentation 2001:db8::/32.
+    return (b[0] & 0xe0) === 0x20 &&
+      !(b[0] === 0x20 && b[1] === 0x01 && b[2] === 0x0d && b[3] === 0xb8);
+  }
+
+  function sameIP(a, b) {
+    const x = parseIP(a), y = parseIP(b);
+    return Boolean(x && y && x.version === y.version &&
+      x.bytes.every((v, i) => v === y.bytes[i]));
+  }
+
+  function checkInput(ip) {
+    if (!ip) return 'Enter an IPv4 or IPv6 address.';
+    if (/\s/.test(ip)) return 'Remove spaces from the IP address.';
+    const parsed = parseIP(ip);
+    if (!parsed) return 'Enter a valid IPv4 or IPv6 address (for example, 8.8.8.8 or 2001:4860:4860::8888).';
+    if (!isPublicIP(parsed)) return 'This is a private, reserved, or non-public IP address. Only public addresses can be geolocated.';
+    return '';
+  }
+
+  function text(value) {
+    if (value === undefined || value === null || value === '' || value === 'Unknown') return 'Not available';
+    return String(value);
+  }
+
+  function formatAsn(value) {
+    if (value === undefined || value === null || value === '') return '';
+    const match = String(value).match(/^(?:AS)?(\d+)$/i);
+    return match ? 'AS' + match[1] : '';
+  }
+
+  function setBusy(state) {
+    busy = state;
+    button.disabled = state;
+    input.readOnly = state;
+    $('myIpBtn').disabled = state;
+    $('exampleBtn').disabled = state;
+    $('checkProvidersBtn').disabled = state;
+    providerSelect.disabled = state;
+    $('btnText').textContent = state ? 'Searching…' : 'Locate IP';
+    $('btnArrow').style.display = state ? 'none' : '';
+    let spin = button.querySelector('.spinner');
+    if (state && !spin) {
+      spin = document.createElement('span'); spin.className = 'spinner'; button.prepend(spin);
+    }
+    if (!state && spin) spin.remove();
+    $('results').setAttribute('aria-busy', String(state));
+    if (!state) progress.textContent = '';
+  }
+
+  function clearErrors() {
+    $('inputMessage').textContent = '';
+    $('errorBox').style.display = 'none';
+    $('mainError').style.display = 'none';
+  }
+
+  function showError(message) {
+    $('errorText').textContent = message;
+    $('errorBox').style.display = 'block';
+  }
+
+  async function requestProvider(provider, requestedIP) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), PROVIDER_TIMEOUT_MS);
+    try {
+      const response = await fetch(provider.url(requestedIP), {
+        method: 'GET', mode: 'cors', cache: 'no-store', signal: controller.signal,
+        headers: {Accept: 'application/json'}
+      });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Invalid JSON response');
+      const normalized = provider.normalize(data);
+      if (!normalized.ip || !parseIP(String(normalized.ip))) throw new Error('Missing or invalid returned IP');
+      if (requestedIP && !sameIP(requestedIP, String(normalized.ip))) throw new Error('Provider returned a different IP');
+      if (!isPublicIP(parseIP(String(normalized.ip)))) throw new Error('Non-public result');
+      const hasCoords = normalized.latitude !== undefined && normalized.latitude !== null && normalized.latitude !== '' &&
+        normalized.longitude !== undefined && normalized.longitude !== null && normalized.longitude !== '' &&
+        Number.isFinite(Number(normalized.latitude)) && Number.isFinite(Number(normalized.longitude)) &&
+        Math.abs(Number(normalized.latitude)) <= 90 && Math.abs(Number(normalized.longitude)) <= 180;
+      if (!normalized.country && !normalized.countryCode && !hasCoords) throw new Error('Location fields missing');
+      normalized.version = 'IPv' + parseIP(String(normalized.ip)).version;
+      return { normalized, raw: data };
+    } catch (e) {
+      if (e.name === 'AbortError') throw new Error('Timed out after ' + (PROVIDER_TIMEOUT_MS / 1000) + 's');
+      if (e instanceof TypeError) throw new Error('Network or browser CORS error');
+      throw e;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  // Both the normal interface and the JSON-only URL use this same resolver.
+  // Auto mode tries services in order; selecting one service disables fallback.
+  async function resolveLookup(requestedIP, mode, onProgress = () => {}) {
+    const chosen = mode === 'auto' ? providers : providers.filter(p => p.id === mode);
+    if (!chosen.length) throw new Error('Unknown geolocation provider: ' + mode);
+    const errors = [];
+    for (let i = 0; i < chosen.length; i++) {
+      const provider = chosen[i];
+      onProgress('Checking ' + provider.name + ' (' + (i + 1) + '/' + chosen.length + ')' +
+        (errors.length ? ' · Trying backup…' : '…'));
+      try {
+        const result = await requestProvider(provider, requestedIP);
+        return {
+          data: {
+            ...result.normalized,
+            source: provider.name,
+            sourceId: provider.id,
+            sourceUrl: provider.website,
+            sourceIndex: i + 1,
+            totalSources: chosen.length,
+            selection: mode
+          },
+          raw: result.raw
+        };
+      } catch (err) {
+        errors.push(provider.name + ': ' + (err.message || 'Request failed'));
+        console.warn('[xsukax IP2Location]', provider.name, 'failed:', err);
+      }
+    }
+    throw new Error((mode === 'auto' ? 'All ' + chosen.length + ' geolocation providers failed. ' :
+      chosen[0].name + ' could not complete the lookup. ') + errors.join(' · '));
+  }
+
+  async function locate(requestedIP = null) {
+    if (busy) return;
+    clearErrors();
+    if (requestedIP !== null) {
+      requestedIP = requestedIP.trim();
+      const validation = checkInput(requestedIP);
+      if (validation) {
+        $('inputMessage').textContent = validation;
+        input.focus();
+        return;
+      }
+    }
+    const mode = providerSelect.value;
+    setBusy(true);
+    try {
+      const result = await resolveLookup(requestedIP, mode, message => { progress.textContent = message; });
+      if (requestedIP === null) input.value = result.data.ip;
+      render(result.data);
+      updateAddress('ip', result.data.ip, mode);
+    } catch (err) {
+      showError(err.message || 'No location data available.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // Static HTML cannot set HTTP Content-Type: application/json. This mode shows
+  // JSON text, and includes the original upstream service response unmodified.
+  async function showRawView(rawIP, mode) {
+    document.title = 'JSON · xsukax IP2Location';
+    const pre = document.createElement('pre');
+    pre.id = 'rawJson';
+    pre.setAttribute('aria-live', 'polite');
+    pre.style.cssText = 'white-space:pre-wrap;overflow-wrap:anywhere;margin:0;padding:24px;min-height:100vh;background:#fbfbfc;color:#172033;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace';
+    document.body.replaceChildren(pre);
+    const show = obj => { pre.textContent = JSON.stringify(obj, null, 2); };
+    rawIP = (rawIP || '').trim();
+    const validation = checkInput(rawIP);
+    if (validation || mode === null) {
+      show({success: false, ip: rawIP, provider: mode, error: validation || 'Unknown geolocation provider.'});
+      return;
+    }
+    show({status: 'loading', ip: rawIP, provider: mode});
+    try {
+      const result = await resolveLookup(rawIP, mode);
+      const d = result.data;
+      show({
+        success: true,
+        ip: d.ip,
+        provider: d.source,
+        providerId: d.sourceId,
+        providerUrl: d.sourceUrl,
+        mode,
+        fallbackUsed: mode === 'auto' && d.sourceIndex > 1,
+        data: {
+          ip: d.ip, version: d.version, country: d.country ?? null,
+          countryCode: d.countryCode ?? null, region: d.region ?? null,
+          city: d.city ?? null, postal: d.postal ?? null,
+          latitude: d.latitude ?? null, longitude: d.longitude ?? null,
+          timezone: d.timezone ?? null, utc: d.utc ?? null,
+          isp: d.isp ?? null, organization: d.organization ?? null,
+          asn: d.asn ?? null, proxy: d.proxy ?? null,
+          accuracyKm: d.accuracyKm ?? null
+        },
+        raw: result.raw
+      });
+    } catch (err) {
+      show({success: false, ip: rawIP, provider: mode, error: err.message || 'Lookup failed.'});
+    }
+  }
+
+  async function checkProviders() {
+    if (busy) return;
+    clearErrors();
+    $('providerHealth').textContent = '';
+    setBusy(true);
+    const report = [];
+    try {
+      for (let i = 0; i < providers.length; i++) {
+        const provider = providers[i];
+        progress.textContent = 'Testing ' + provider.name + ' (' + (i + 1) + '/' + providers.length + ')…';
+        try {
+          await requestProvider(provider, '8.8.8.8');
+          report.push(provider.name + ': available');
+        } catch (err) {
+          report.push(provider.name + ': unavailable (' + (err.message || 'failed') + ')');
+        }
+        $('providerHealth').textContent = report.join(' · ');
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function render(data) {
+    current = data;
+    $('emptyState').style.display = 'none';
+    $('results').style.display = 'block';
+    $('resultIp').textContent = data.ip;
+    $('countryLabel').textContent = [data.country, data.countryCode].filter(Boolean).join(' / ') || 'Country unavailable';
+    $('city').textContent = text(data.city || data.region || data.country);
+    $('region').textContent = [data.region, data.country].filter(Boolean).join(', ') || 'Regional data not available';
+    const lat = Number(data.latitude), lon = Number(data.longitude);
+    const hasCoords = data.latitude !== null && data.latitude !== undefined && data.latitude !== '' &&
+      data.longitude !== null && data.longitude !== undefined && data.longitude !== '' &&
+      Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
+    $('lat').textContent = hasCoords ? lat.toFixed(4) + '°' : '—';
+    $('lon').textContent = hasCoords ? lon.toFixed(4) + '°' : '—';
+    $('postal').textContent = text(data.postal);
+    $('isp').textContent = text(data.isp);
+    $('org').textContent = text(data.organization);
+    const tz = [data.timezone, data.utc].filter(Boolean).join(' · ');
+    $('timezone').textContent = tz || 'Not available';
+    $('connection').textContent = [data.version, formatAsn(data.asn),
+      data.proxy === true ? 'Proxy reported' : ''].filter(Boolean).join(' · ') || 'Not available';
+
+    $('sourceName').textContent = data.source;
+    $('sourceName').href = data.sourceUrl;
+    $('sourcePosition').textContent = data.selection !== 'auto'
+      ? 'Selected provider · no fallback'
+      : data.sourceIndex === 1 ? 'Primary provider'
+      : 'Backup provider ' + data.sourceIndex + ' of ' + data.totalSources;
+    $('sourceHint').textContent = data.selection === 'auto'
+      ? 'Automatic fallback · no API key required'
+      : 'Manual provider · no automatic fallback';
+    $('jsonLink').href = linkFor('raw', data.ip, data.selection);
+    $('sourceAccuracy').textContent = Number.isFinite(Number(data.accuracyKm)) &&
+      data.accuracyKm !== undefined && data.accuracyKm !== null
+      ? ' · Estimated radius: ' + Number(data.accuracyKm) + ' km' : '';
+
+    if (hasCoords) {
+      const d = 0.10;
+      const bbox = [Math.max(-180, lon - d), Math.max(-90, lat - d),
+        Math.min(180, lon + d), Math.min(90, lat + d)].join(',');
+      $('map').src = 'https://www.openstreetmap.org/export/embed.html?bbox=' +
+        encodeURIComponent(bbox) + '&layer=mapnik&marker=' + encodeURIComponent(lat + ',' + lon);
+      $('map').style.display = '';
+      $('mapLabel').textContent = 'MAP / ' + lat.toFixed(3) + ', ' + lon.toFixed(3);
+    } else {
+      $('map').removeAttribute('src');
+      $('map').style.display = 'none';
+      $('mapLabel').textContent = 'MAP DATA NOT AVAILABLE';
+    }
+    history = [
+      {ip: data.ip, place: [data.city, data.countryCode].filter(Boolean).join(', ')},
+      ...history.filter(item => !sameIP(item.ip, data.ip))
+    ].slice(0, 8);
+    renderHistory();
+    $('results').scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+  }
+
+  function renderHistory() {
+    $('historySection').style.display = history.length ? 'block' : 'none';
+    $('historyList').replaceChildren(...history.map(item => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'history-item mono';
+      b.textContent = item.ip + (item.place ? ' · ' + item.place : '');
+      b.setAttribute('aria-label', 'Look up ' + item.ip + ' again');
+      b.addEventListener('click', () => { if (!busy) { input.value = item.ip; locate(item.ip); } });
+      return b;
+    }));
+  }
+
+  form.addEventListener('submit', e => { e.preventDefault(); locate(input.value); });
+  input.addEventListener('input', () => { $('inputMessage').textContent = ''; $('errorBox').style.display = 'none'; });
+  $('exampleBtn').addEventListener('click', () => { if (!busy) { input.value = '8.8.8.8'; locate(input.value); } });
+  $('myIpBtn').addEventListener('click', () => { if (!busy) { input.value = ''; locate(); } });
+  $('checkProvidersBtn').addEventListener('click', checkProviders);
+  $('newBtn').addEventListener('click', () => {
+    if (busy) return;
+    input.value = ''; input.focus(); clearErrors();
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('ip'); url.searchParams.delete('raw');
+      window.history.replaceState(null, '', url.href);
+    } catch { /* file:// restrictions */ }
+    $('lookup').scrollIntoView({behavior: 'smooth'});
+  });
+  $('clearHistory').addEventListener('click', () => { history = []; renderHistory(); });
+  async function copyString(value, target, successText) {
+    let ok = false;
+    try { await navigator.clipboard.writeText(value); ok = true; }
+    catch {
+      const ta = document.createElement('textarea');
+      try {
+        ta.value = value; ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta); ta.select();
+        ok = document.execCommand('copy');
+      } catch { ok = false; } finally { ta.remove(); }
+    }
+    target.textContent = ok ? successText : 'Copy failed';
+    setTimeout(() => { target.textContent = target.id === 'shareBtn' ? 'Copy link' : 'Copy summary'; }, 1800);
+  }
+
+  $('shareBtn').addEventListener('click', async () => {
+    if (!current) return;
+    await copyString(linkFor('ip', current.ip, current.selection), $('shareBtn'), 'Link copied!');
+  });
+
+  $('copyBtn').addEventListener('click', async () => {
+    if (!current) return;
+    const copyText = [
+      'IP: ' + current.ip,
+      'Location: ' + [current.city, current.region, current.country].filter(Boolean).join(', '),
+      'Coordinates: ' + $('lat').textContent + ', ' + $('lon').textContent,
+      'ISP: ' + $('isp').textContent,
+      'Organization: ' + $('org').textContent,
+      'Timezone: ' + $('timezone').textContent,
+      'Network: ' + $('connection').textContent,
+      'Source: ' + current.source + ' (' + current.sourceUrl + ')'
+    ].join('\n');
+    await copyString(copyText, $('copyBtn'), 'Copied!');
+  });
+
+  // On first load, raw takes precedence over ip if both query parameters exist.
+  // The provider parameter works identically for UI, JSON and manual lookups.
+  const params = new URLSearchParams(window.location.search);
+  const urlMode = params.has('raw') ? 'raw' : params.has('ip') ? 'ip' : null;
+  const requested = urlMode ? params.get(urlMode) : null;
+  const mode = selectedMode(params.get('provider') || 'auto');
+  if (mode !== null) providerSelect.value = mode;
+  if (urlMode === 'raw') {
+    showRawView(requested, mode);
+  } else if (mode === null) {
+    showError('Unknown provider. Choose auto, ipwhois, ipapico, geojs, or freeipapi.');
+  } else if (urlMode === 'ip') {
+    input.value = requested || '';
+    locate(requested || '');
+  }
+})();
+</script>
+</body>
+</html>
